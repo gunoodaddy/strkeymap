@@ -1,9 +1,11 @@
 # strkeymap
 strkeymap is string key map written by c language.
 
-## USAGE
+## Usage
 
 just include "strkeymap.h" in your source or header files.
+(you are responsible for freeing your own value in this map.)
+
 
 ## Examples
 

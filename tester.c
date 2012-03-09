@@ -14,13 +14,13 @@ int main() {
 	strkeymap_insert(map, "6", (void *)6);
 	strkeymap_insert(map, "7", (void *)7);
 	strkeymap_iterator it = strkeymap_find(map, "7");
-	printf("strkeymap_find : %s : %p\n", it.first, it.second);
+	printf("strkeymap_find : %s : %p\n", it.first, *it.second);
 
 	if(1) {
 		const strkeymap_iterator* it = strkeymap_iterator_new(map);
 		if(it) {
 			do {
-				printf("[ITER-%s:%p] => ", it->first, it->second);
+				printf("[ITER-%s:%p] => ", it->first, *it->second);
 				it = strkeymap_iterator_next(it);
 			} while(it);
 			printf("\n");

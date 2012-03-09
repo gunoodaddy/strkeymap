@@ -44,11 +44,11 @@ typedef struct strkey_value_internal {
 #define TRACE(...)
 #define DEBUG printf
 
-void strkeymap_iterator_free(strkeymap *map);
+inline void strkeymap_iterator_free(strkeymap *map);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-int _compareCallback(const void *l, const void *r) {
+inline int _compareCallback(const void *l, const void *r) {
 	const strkey_value_internal *ll = (strkey_value_internal *)l;
 	const strkey_value_internal *lr = (strkey_value_internal *)r;
 
@@ -57,7 +57,7 @@ int _compareCallback(const void *l, const void *r) {
 	return strcmp(ll->key, lr->key);
 }  
 
-int _deleteCompareCallback(const void *l, const void *r) {
+inline int _deleteCompareCallback(const void *l, const void *r) {
 	strkey_value_internal *ll = (strkey_value_internal *)l;
 	strkey_value_internal *lr = (strkey_value_internal *)r;
 
@@ -70,14 +70,14 @@ int _deleteCompareCallback(const void *l, const void *r) {
 	return ret;
 }  
 
-void _freeNodeCallback(void *nodep) {
+inline void _freeNodeCallback(void *nodep) {
 	strkey_value_internal *kv = (strkey_value_internal *)nodep;
 	DEBUG("_freeNodeCallback : %p, %p, %s, %p\n", nodep, kv, kv->key, kv->value);
 	free(kv->key);
 	free(kv);
 }
 
-void _iterationCallback(const void *nodep, const VISIT which, const int depth) {
+inline void _iterationCallback(const void *nodep, const VISIT which, const int depth) {
 	STRKEYMAP_CHECK_WHICH(which);
 
 	strkey_value_internal *kv = STRKV_FROM_NODE(nodep);
@@ -101,20 +101,20 @@ void _iterationCallback(const void *nodep, const VISIT which, const int depth) {
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 
-strkeymap *strkeymap_new() {
+inline strkeymap *strkeymap_new() {
 	strkeymap *map = (strkeymap *)malloc(sizeof(strkeymap));
 	map->root = NULL;
 	map->head = map->tail = NULL;
 	return map;
 }
 
-void strkeymap_free(strkeymap *map) {
+inline void strkeymap_free(strkeymap *map) {
 	strkeymap_iterator_free(map);
 	tdestroy(map->root, _freeNodeCallback);
 	free(map);
 }
 
-int strkeymap_insert(strkeymap *map, const char *key, void *value) {
+inline int strkeymap_insert(strkeymap *map, const char *key, void *value) {
 	strkey_value_internal _find;
 	_find.key = (char *)key;
 	void *ret = tfind(&_find, &map->root, _compareCallback); /* read */ 
@@ -138,7 +138,7 @@ int strkeymap_insert(strkeymap *map, const char *key, void *value) {
 	return 0;
 }
 
-strkeymap_iterator strkeymap_find(strkeymap *map, const char *key) {
+inline strkeymap_iterator strkeymap_find(strkeymap *map, const char *key) {
 	strkey_value_internal _find;
 	_find.key = (char *)key;
 
@@ -160,14 +160,14 @@ strkeymap_iterator strkeymap_find(strkeymap *map, const char *key) {
 	return it;
 }
 
-void strkeymap_erase(strkeymap *map, const char *key) {
+inline void strkeymap_erase(strkeymap *map, const char *key) {
 	strkey_value_internal _find;
 	_find.key = (char *)key;
 
 	tdelete(&_find, &map->root, _deleteCompareCallback);
 }
 
-const strkeymap_iterator* strkeymap_iterator_new(strkeymap *map) {
+inline const strkeymap_iterator* strkeymap_iterator_new(strkeymap *map) {
 	map->head = NULL;
 	map->tail = NULL;
 	twalk(map->root, _iterationCallback);
@@ -181,13 +181,13 @@ const strkeymap_iterator* strkeymap_iterator_new(strkeymap *map) {
 	return map->head;
 }
 
-const strkeymap_iterator* strkeymap_iterator_next(const strkeymap_iterator *it) {
+inline strkeymap_iterator* strkeymap_iterator_next(const strkeymap_iterator *it) {
 	if(it)
 		return it->next;
 	return NULL;
 }
 
-void strkeymap_iterator_free(strkeymap *map) {
+inline void strkeymap_iterator_free(strkeymap *map) {
 	strkeymap_iterator *_next = map->head;
 	map->head = map->tail = NULL;
 	while(_next) {

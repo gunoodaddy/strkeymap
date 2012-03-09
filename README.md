@@ -28,24 +28,21 @@ just include "strkeymap.h" in your source or header files.
 		strkeymap_iterator it = strkeymap_find(map, "7");
 		printf("strkeymap_find : %s : %p\n", it.first, *it.second);
 	 
-		if(1) {
-			const strkeymap_iterator* it = strkeymap_iterator_new(map);
-			if(it) {
-				do {
-					printf("[ITER-%s:%p] => ", it->first, *it->second);
-					it = strkeymap_iterator_next(it);
-				} while(it);
-				printf("\n");
-			}
-			strkeymap_iterator_free(map);
+
+		const strkeymap_iterator* it = strkeymap_iterator_new(map);
+		if(it) {
+			do {
+				printf("[ITER-%s:%p] => ", it->first, *it->second);
+				it = strkeymap_iterator_next(it);
+			} while(it);
+			printf("\n");
 		}
-	 
-		if(1) {
-			strkeymap_erase(map, "1");
-			strkeymap_erase(map, "2");
-			strkeymap_erase(map, "3");
-			strkeymap_erase(map, "4");
-		}
+		strkeymap_iterator_free(map);
+
+		strkeymap_erase(map, "1");
+		strkeymap_erase(map, "2");
+		strkeymap_erase(map, "3");
+		strkeymap_erase(map, "4");
 	 
 		strkeymap_free(map);
 	 

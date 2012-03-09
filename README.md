@@ -17,6 +17,7 @@ just include "strkeymap.h" in your source or header files.
 		strkeymap *map;
 		map = strkeymap_new();
 	 
+	 	// insert test
 		strkeymap_insert(map, "1", (void *)1);
 		strkeymap_insert(map, "1", (void *)11);
 		strkeymap_insert(map, "2", (void *)2);
@@ -28,7 +29,7 @@ just include "strkeymap.h" in your source or header files.
 		strkeymap_iterator it = strkeymap_find(map, "7");
 		printf("strkeymap_find : %s : %p\n", it.first, *it.second);
 	 
-
+	 	// iteration test
 		const strkeymap_iterator* it = strkeymap_iterator_new(map);
 		if(it) {
 			do {
@@ -39,6 +40,7 @@ just include "strkeymap.h" in your source or header files.
 		}
 		strkeymap_iterator_free(map);
 
+		// erase test
 		strkeymap_erase(map, "1");
 		strkeymap_erase(map, "2");
 		strkeymap_erase(map, "3");
